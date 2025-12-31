@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Yeni Yıl Daveti 🎄</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',Tahoma,sans-serif;
+  background:radial-gradient(circle at top,#1a1a2e,#0f0f1a);
+  color:#fff;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
+
+.container{
+  width:90%;
+  max-width:500px;
+  text-align:center;
+  z-index:10;
+  position:relative;
+}
+
+.invite-btn{
+  width:100%;
+  padding:16px;
+  margin:12px 0;
+  font-size:1.1rem;
+  border-radius:14px;
+  border:none;
+  background:linear-gradient(135deg,#ffcc70,#ff8c42);
+  color:#1a1a1a;
+  font-weight:600;
+}
+
+.card{
+  display:none;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(8px);
+  border-radius:20px;
+  padding:25px;
+}
+
+.close-btn{
+  margin-top:25px;
+  padding:10px 18px;
+  border-radius:12px;
+  border:none;
+  background:#fff;
+  font-weight:600;
+}
+
+.confetti{
+  position:fixed;
+  width:8px;height:8px;
+  top:-10px;
+  left:calc(100% * var(--x));
+  background:hsl(var(--h),90%,60%);
+  animation:fall linear forwards;
+  pointer-events:none; /* 🔴 MOBİL TIKLAMA KURTARICI */
+  z-index:1;
+}
+
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(720deg);opacity:0;}
+}
+
+#midnight{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle,#ffcc70,#ff8c42);
+  color:#1a1a1a;
+  font-size:2rem;
+  font-weight:700;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  z-index:20;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/10/30/audio_3c35e4f7d0.mp3">
+</audio>
+
+<div class="container" id="menu">
+  <h1>🎉 Yeni Yıl Davetleri 🎉</h1>
+  <div id="countdown"></div>
+
+  <button class="invite-btn" data-id="serdar">📩 Serdar ZİNİ Daveti</button>
+  <button class="invite-btn" data-id="nihal">📩 Nihal Zini Daveti</button>
+  <button class="invite-btn" data-id="yigit">📩 Yiğit ZİNİ Daveti</button>
+  <button class="invite-btn" data-id="emre">📩 Emre ZİNİ Daveti</button>
+  <button class="invite-btn" data-id="merve">📩 Merve Zini Daveti</button>
+  <button class="invite-btn" data-id="gonul">📩 Gönül Zini Daveti</button>
+  <button class="invite-btn" data-id="aysenur">📩 Ayşenur Çil Daveti</button>
+  <button class="invite-btn" data-id="fatih">📩 Fatih Çil Daveti</button>
+</div>
+
+<!-- KARTLAR -->
+<div class="container card" id="serdar"><h2>Serdar ZİNİ</h2><p>Babam, yeni yılın kutlu olsun.</p><button class="close-btn">← Geri</button></div>
+<div class="container card" id="nihal"><h2>Nihal Zini</h2><p>Anneciğim, yeni yılın kutlu olsun.</p><button class="close-btn">← Geri</button></div>
+<div class="container card" id="yigit"><h2>Yiğit ZİNİ</h2><p>Gardaşım, mutlu yıllar.</p><button class="close-btn">← Geri</button></div>
+<div class="container card" id="emre"><h2>Emre ZİNİ</h2><p>Amca, huzurlu bir yıl dilerim.</p><button class="close-btn">← Geri</button></div>
+<div class="container card" id="merve"><h2>Merve Zini</h2><p>Ailemize hoş geldin.</p><button class="close-btn">← Geri</button></div>
+<div class="container card" id="gonul"><h2>Gönül Zini</h2><p>Babannem, sağlıklı yıllar.</p><button class="close-btn">← Geri</button></div>
+<div class="container card" id="aysenur"><h2>Ayşenur Çil</h2><p>Mutlu yıllar.</p><button class="close-btn">← Geri</button></div>
+<div class="container card" id="fatih"><h2>Fatih Çil</h2><p>Komutanım, mutlu yıllar 🇹🇷</p><button class="close-btn">← Geri</button></div>
+
+<div id="midnight">🎆 MUTLU YILLAR ZİNİ & ÇİL AİLESİ 🎆</div>
+
+<script>
+const music=document.getElementById("music");
+const buttons=document.querySelectorAll(".invite-btn");
+const cards=document.querySelectorAll(".card");
+
+buttons.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const id=btn.dataset.id;
+    music.play().catch(()=>{});
+    document.getElementById("menu").style.display="none";
+    cards.forEach(c=>c.style.display="none");
+    document.getElementById(id).style.display="block";
+    if(id==="merve") confetti(80);
+    if(id==="fatih") honor();
+  });
+});
+
+document.querySelectorAll(".close-btn").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.getElementById("menu").style.display="block";
+    cards.forEach(c=>c.style.display="none");
+  });
+});
+
+function confetti(n){
+  for(let i=0;i<n;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.setProperty("--x",Math.random());
+    c.style.setProperty("--h",Math.random()*360);
+    c.style.animationDuration=2+Math.random()*3+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),5000);
+  }
+}
+
+function honor(){
+  for(let i=0;i<40;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.background="linear-gradient(135deg,red,white)";
+    c.style.setProperty("--x",Math.random());
+    c.style.animationDuration=2+Math.random()*2+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
+}
+</script>
+
+</body>
+</html>
